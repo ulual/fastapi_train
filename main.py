@@ -1,7 +1,18 @@
 from fastapi import FastAPI
 from fastapi.params import Body
+from pydantic import BaseModel
+from typing import Optional
 
 app = FastAPI()
+
+#Validate the entry of a post
+class Post(BaseModel):
+    title: str
+    content: str
+    published: bool = True
+    rating: Optional[int] = None
+
+
 
 
 # request Get method url: "/" - this is for root.
@@ -18,6 +29,8 @@ def get_posts():
 
 # To create a post
 @app.post("/createposts")
-def create_posts(payload: dict = Body(...)):
-    print(payload)
-    return{"new_post": f"title: {payload['title']} content: {payload['content']}"}
+def create_posts(new_posts: Post):
+    print(new_posts)
+    print(new_posts.dict())
+    return{"data": "new post"}
+# title str, content str
